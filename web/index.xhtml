@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Serginho.Org - AWS S3 Example</title>
+    </h:head>
+    <h:body>
+        <h:form enctype="multipart/form-data">
+            <div>
+                <h2>Files</h2>
+                
+                <p:dataTable id="filesList" value="#{AwsS3Bean.fileList}" var="file"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             emptyMessage="No files found."
+                             paginator="true" rows="10">
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Name"/>
+                        </f:facet>
+                        <h:commandLink value="#{AwsS3Bean.fileName(file.key)}">
+                            <p:fileDownload value="#{AwsS3Bean.downloadFile(file.key)}" />
+                        </h:commandLink>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Last Modified"/>
+                        </f:facet>
+                        <h:commandLink value="#{file.lastModified}">
+                            <p:fileDownload value="#{AwsS3Bean.downloadFile(file.key)}" />
+                        </h:commandLink>
+                    </p:column>
+                    <p:column  width="20%">
+                        <f:facet name="header"><h:outputText value="Action"/></f:facet>
+                        <div>
+                            <h:commandLink value="delete" action="#{AwsS3Bean.deleteFile(file.key)}"/>
+                        </div>
+                    </p:column>
+                </p:dataTable>   
+            </div>
+
+            <br/>
+            
+            <div>
+                <h2>Add Files</h2>
+                
+                <p:fileUpload id="file"
+                              fileUploadListener="#{AwsS3Bean.fileUpload}"                                      
+                              mode="advanced" 
+                              dragDropSupport="true"
+                              auto="true"
+                              label="Choose or Drag and Drop"
+                              multiple="true"
+                              immediate="true"
+                              update="filesEditList">
+                </p:fileUpload>
+            </div>
+
+            <br/>
+            
+            <div>
+                <h2>Files to be uploaded</h2>
+                
+                <p:dataTable id="filesEditList" value="#{AwsS3Bean.fileEditList}" var="file"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                             emptyMessage="No files added."
+                             paginator="true" rows="10">   
+                    
+                    <p:column width="80%">
+                        <f:facet name="header"><h:outputText value="File"/></f:facet>
+                        <div>
+                            <h:outputText id="file" value="#{file.fileName}"/>
+                        </div>
+                    </p:column>
+
+                    <p:column  width="20%">
+                        <f:facet name="header"><h:outputText value="Action"/></f:facet>
+                        <div>
+                            <h:commandLink id="remove" value="remove" actionListener="#{AwsS3Bean.removeEditFile(file.fileName)}"/>
+                        </div>
+                    </p:column>
+                </p:dataTable>                
+            </div>
+            
+            <br/>
+            
+            <div>
+                <p:commandButton id="uploadFiles" value="Upload Files to AWS S3" action="#{AwsS3Bean.uploadEditFiles()}" ajax="false">
+                    <p:ajax update="filesList filesEditList" />
+                </p:commandButton>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+
