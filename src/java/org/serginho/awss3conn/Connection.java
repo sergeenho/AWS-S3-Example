@@ -31,8 +31,9 @@ import org.primefaces.model.UploadedFile;
  * 
  */
 public class Connection {
-    private String amazonBucket = "amazon.bucket.name";
-    private String key = "amazon.key" + "/";
+    private String amazonBucket = "amazon.bucket.name"; // Example: All Buckets /company.webapp.dev/test
+                                                        // For this example, the bucket will be: company.webapp.dev
+    private String key = "amazon.key" + "/";            // For this example, the key will be: test
     
     private AWSCredentials getAWSCredentials(){
         return new BasicAWSCredentials("amazon.accessKey", "amazon.secretKey");
