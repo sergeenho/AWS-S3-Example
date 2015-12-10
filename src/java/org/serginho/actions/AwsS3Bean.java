@@ -58,7 +58,7 @@ public class AwsS3Bean {
     
     public void uploadEditFiles(){
         for(UploadedFile file : this.fileList)
-            if(!new Connection().updaloadFile(file))
+            if(new Connection().updaloadFile(file))
                 removeEditFile(fileName(file.getFileName()));
     }
     
