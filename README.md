@@ -8,8 +8,4 @@ aws-java-sdk-1.10.11
 httpcomponents-client-4.5-bin
 joda-time-2.8.2
 
-On this example, will be presented the following Architecture:
-
-DAO GenericDAO Singleton for access the SessionFactory of Hibernate POJO
-
 www.Serginho.org github@serginho.org
